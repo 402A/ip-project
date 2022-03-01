@@ -105,10 +105,29 @@
  
  <script type="module">
    import "./src/nasa-image.js";
+
+  /**
+   * @note
+   * There are like a million references to document.querySelector('nasa-image-search')
+   * which could be served by a simple const imageSearch = document.querySelector('nasa-image-search');
+   * while not incorrect, it would have reduced complexity a lot here.
+   * 
+   * There's also a lot of updateTerm calls which will usually go...
+   * update term correctly
+   * then update term to be start year (incorrectly)
+   * then updater term to be end year (incorrectly)
+   * 
+   * .endYear and .startYear would have been a simple way of updating these values
+   * 
+   * Also all calls to updateTerm could have just been document.querySelector('nasa-image-search').term = "whatever"
+   * as you have the state management correct internally for this to "just work"
+   */
+
+
    document.getElementById('readData').addEventListener('click', e => {
        e.currentTarget.checked
-         ? (document.querySelector('#images').listOnly = true)
-         : (document.querySelector('#images').listOnly = false);
+         ? (document.querySelector('nasa-image-search').listView = true)
+         : (document.querySelector('nasa-image-search').listView = false);
      });
  
    document.querySelector('#button').addEventListener('click', (e) => {
